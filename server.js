@@ -2,6 +2,7 @@ const express = require('express');
 const mongojs = require('mongojs');
 const logger = require('morgan');
 const path = require('path');
+const mongoose = require("mongoose");
 const htmlRoutes = require("./routes/htmlRoutes");
 const apiRoutes = require("./routes/apiRoutes");
 
@@ -17,10 +18,15 @@ app.use(express.static("public"));
 app.use(htmlRoutes);
 app.use(apiRoutes);
 
-const databaseUrl = "notetaker";
-const collections = ["notes"];
+// const databaseUrl = "workout";
+// const collections = ["workout"];
 
-const db = mongojs(databaseUrl, collections);
+// const db = mongojs(databaseUrl, collections);
+
+mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/workout", {
+  useNewUrlParser: true,
+  useFindAndModify: false
+});
 
 
   app.listen(3000, () => {
