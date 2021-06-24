@@ -25,12 +25,14 @@ app.use(apiRoutes);
 
 mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/workout", {
   useNewUrlParser: true,
-  useFindAndModify: false
+  useFindAndModify: false,
+  useUnifiedTopology: true,
+  useCreateIndex: true,
 });
 
 
-  app.listen(3000, () => {
-    console.log("App running on port http://localhost:3000!");
+  app.listen(PORT, () => {
+    console.log(`App running on port http://localhost:${PORT}!`);
   });
 
   module.exports = app;
