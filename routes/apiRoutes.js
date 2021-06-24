@@ -3,15 +3,35 @@ var path = require("path");
 var express = require("express");
 var router = express.Router();
 
-    router.get("/api/workouts",function(req,res){  
+    // router.get("/api/workouts",function(req,res){  
+    //     Workout.find()
+    //     .then(data =>{  
+    //         res.json(data)
+    //     })
+    //     .catch(err => { 
+    //         res.json(err)
+    //     })
+    // });
+
+    router.get("/api/workouts", function (req, res){  
         Workout.find()
-        .then(data =>{  
-            res.json(data)
-        })
-        .catch(err => { 
-            res.json(err)
-        })
-    });
+        .then((data) => { 
+            const updatedData = data.map((workout) => {
+                const totalDuration = workout.exercises.reduce(
+                  (acc, curr) => acc + curr.duration, 0); 
+                return {
+                    _id: workout.id,
+                    day: workout.day,
+                    exercises: workout.exercises,
+                    totalDuration,
+                  };
+                });    
+                res.json(updatedData);
+            })
+            .catch((err) => { 
+                res.json(err);
+            });
+        });
 
 
     router.post("/api/workouts",function (req,res){    
